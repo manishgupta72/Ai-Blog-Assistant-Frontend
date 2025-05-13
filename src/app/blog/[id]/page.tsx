@@ -57,7 +57,7 @@ export default function BlogDetailPage() {
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50 py-12 px-6">
       <div className="prose prose-lg max-w-3xl mx-auto bg-white rounded-xl p-8 shadow">
         <h1 className="text-4xl font-bold text-indigo-800 leading-tight mb-4 capitalize text-center">
-          {blog.title}
+          {/* {blog.title} */}
         </h1>
 
         <div className="flex items-center justify-center text-sm text-gray-500 gap-2 mb-6">
