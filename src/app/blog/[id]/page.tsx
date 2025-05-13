@@ -1,4 +1,3 @@
-// 📁 frontend/app/blog/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,7 +5,6 @@ import { useParams } from "next/navigation";
 import axios from "@/lib/api";
 import { CalendarDays } from "lucide-react";
 
-// Define a Blog type
 interface Blog {
   _id: string;
   title: string;
@@ -16,11 +14,11 @@ interface Blog {
 
 export default function BlogDetailPage() {
   const { id } = useParams();
-  const [blog, setBlog] = useState<Blog | null>(null); // ⬅ Correct type
+  const [blog, setBlog] = useState<Blog | null>(null);
 
   useEffect(() => {
     if (id) {
-      axios.get(`/blog/${id}`).then((res) => setBlog(res.data));
+      axios.get<Blog>(`/blog/${id}`).then((res) => setBlog(res.data)); // ✅ typed
     }
   }, [id]);
 
@@ -57,7 +55,7 @@ export default function BlogDetailPage() {
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50 py-12 px-6">
       <div className="prose prose-lg max-w-3xl mx-auto bg-white rounded-xl p-8 shadow">
         <h1 className="text-4xl font-bold text-indigo-800 leading-tight mb-4 capitalize text-center">
-          {/* {blog.title} */}
+          {blog.title}
         </h1>
 
         <div className="flex items-center justify-center text-sm text-gray-500 gap-2 mb-6">
