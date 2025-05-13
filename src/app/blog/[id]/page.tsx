@@ -1,13 +1,19 @@
-// 📁 frontend/app/blog/[id]/page.tsx (Updated to Render HTML Content)
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "@/lib/api";
 import { CalendarDays } from "lucide-react";
 
+// ✅ Add type for blog
+interface Blog {
+  title: string;
+  content: string;
+  createdAt: string;
+}
+
 export default function BlogDetailPage() {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState<Blog | null>(null);
 
   useEffect(() => {
     axios.get(`/blog/${id}`).then((res) => setBlog(res.data));
