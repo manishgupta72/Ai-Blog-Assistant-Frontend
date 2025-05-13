@@ -5,8 +5,16 @@ import { CalendarDays, FileText } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/navigation";
 
+// ✅ Define blog type
+interface Blog {
+  _id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+}
+
 export default function DashboardPage() {
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]); // ✅ Typed state
   const [search, setSearch] = useState("");
   const router = useRouter();
 
