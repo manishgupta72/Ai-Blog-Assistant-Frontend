@@ -1,4 +1,3 @@
-// 📁 frontend/components/SmartTitleSuggester.tsx
 "use client";
 import { useState } from "react";
 import axios from "@/lib/api";
@@ -14,7 +13,7 @@ export default function SmartTitleSuggester({ content }: { content: string }) {
       const res = await axios.post("/blog/suggest-title", { content });
       setTitle(res.data.title);
       toast.success("Smart title generated!");
-    } catch (err) {
+    } catch (_err) {
       toast.error("Failed to generate title");
     } finally {
       setLoading(false);

@@ -1,5 +1,10 @@
-// frontend/components/BlogEditor.tsx
-export default function BlogEditor({ content, setContent }: any) {
+export default function BlogEditor({
+  content,
+  setContent,
+}: {
+  content: string;
+  setContent: (val: string) => void;
+}) {
   return (
     <textarea
       className="w-full h-[500px] p-4 border"

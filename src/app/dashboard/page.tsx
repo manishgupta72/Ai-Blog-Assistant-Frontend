@@ -1,12 +1,14 @@
-// 📁 frontend/app/dashboard/page.tsx (Redesigned Elegant Blog List)
 "use client";
 import { useEffect, useState } from "react";
 import axios from "@/lib/api";
 import { CalendarDays, FileText } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
+import { useRouter } from "next/navigation";
+
 export default function DashboardPage() {
   const [blogs, setBlogs] = useState([]);
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     axios.get("/blog/user/user123").then((res) => setBlogs(res.data));
@@ -19,14 +21,14 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50 px-6 py-12">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-center text-3xl  md:text-4xl font-extrabold text-indigo-800 mb-5">
+        <h1 className="text-center text-3xl md:text-4xl font-extrabold text-indigo-800 mb-5">
           <Typewriter
             words={[
               "My Blog Library",
               "Generate AI-Powered Blogs",
               "Create in Seconds, Not Hours",
             ]}
-            loop={true}
+            loop
             cursor
             cursorStyle="_"
             typeSpeed={60}
@@ -47,7 +49,7 @@ export default function DashboardPage() {
             <div
               key={blog._id}
               className="bg-gradient-to-br from-indigo-100 via-sky-100 to-purple-100 p-5 rounded-xl shadow-md hover:shadow-lg transition duration-300 cursor-pointer flex flex-col justify-between"
-              onClick={() => (window.location.href = `/blog/${blog._id}`)}
+              onClick={() => router.push(`/blog/${blog._id}`)}
             >
               <div className="flex items-start gap-3">
                 <div className="text-blue-600">
@@ -62,7 +64,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between text-xs text-indigo-500  mt-4">
+              <div className="flex items-center justify-between text-xs text-indigo-500 mt-4">
                 <div className="flex items-center gap-1">
                   <CalendarDays size={14} />
                   <span>{new Date(blog.createdAt).toLocaleDateString()}</span>

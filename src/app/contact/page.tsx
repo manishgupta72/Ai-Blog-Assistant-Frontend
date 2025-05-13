@@ -1,9 +1,9 @@
-// 📁 frontend/app/contact/page.tsx (Elegant Contact Page)
 "use client";
 import React from "react";
 import { Mail, Phone, Instagram } from "lucide-react";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
+
 const Contact = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-100 px-6 py-16">
@@ -15,7 +15,7 @@ const Contact = () => {
               "Exolve Your Writing Needs 🚀",
               "Connect with Us 🤝",
             ]}
-            loop={true}
+            loop
             cursor
             cursorStyle="_"
             typeSpeed={60}
@@ -24,8 +24,8 @@ const Contact = () => {
           />
         </h2>
         <p className="text-gray-600 mb-12">
-          We'd love to hear from you! Whether it's feedback, collaboration, or
-          just a hello — feel free to reach out anytime.
+          We&apos;d love to hear from you! Whether it&apos;s feedback,
+          collaboration, or just a hello — feel free to reach out anytime.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">

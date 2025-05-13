@@ -11,7 +11,6 @@ import htmlToDraft from "html-to-draftjs";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-// 🧠 Dynamically import editor to avoid hydration error
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
@@ -24,22 +23,19 @@ export default function EditorPage() {
   const router = useRouter();
 
   const [title, setTitle] = useState("");
-
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const blogCreated = useRef(false);
 
   const getHtml = () => {
     const raw = convertToRaw(editorState.getCurrentContent());
     return draftToHtml(raw);
   };
 
-  const blogCreated = useRef(false);
-
   useEffect(() => {
     if (topic && !id && !blogCreated.current) {
       blogCreated.current = true;
-
       axios
         .post("/blog/generate", { topic })
         .then((res) => {
@@ -65,7 +61,7 @@ export default function EditorPage() {
           const blogId = saveRes.data._id;
           router.push(`/blog/${blogId}`);
         })
-        .catch((err) => console.error("Auto Save Error:", err));
+        .catch(() => toast.error("Failed to generate blog"));
     }
 
     if (id) {
@@ -82,7 +78,7 @@ export default function EditorPage() {
         setEditorState(editorState);
       });
     }
-  }, [topic, id, router]); // ✅ router added
+  }, [topic, id, router]);
 
   const handleUpdate = () => {
     const html = getHtml();
@@ -101,7 +97,7 @@ export default function EditorPage() {
         {id ? "Editing Blog:" : "Generating Blog:"} {title}
       </h2>
 
-      <div className="bg-white rounded-lg shadow p-4 ">
+      <div className="bg-white rounded-lg shadow p-4">
         <Editor
           editorState={editorState}
           onEditorStateChange={setEditorState}
