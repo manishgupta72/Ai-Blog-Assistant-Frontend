@@ -4,15 +4,16 @@ import { useParams } from "next/navigation";
 import axios from "@/lib/api";
 import { CalendarDays } from "lucide-react";
 
-interface Blog {
+type BlogType = {
+  _id: string;
   title: string;
   content: string;
   createdAt: string;
-}
+};
 
 export default function BlogDetailPage() {
   const { id } = useParams();
-  const [blog, setBlog] = useState<Blog | null>(null); // ✅ Do this
+  const [blog, setBlog] = useState<BlogType | null>(null); // ✅ Added type here
 
   useEffect(() => {
     axios.get(`/blog/${id}`).then((res) => setBlog(res.data));
@@ -26,7 +27,6 @@ export default function BlogDetailPage() {
             className="mr-3 h-5 w-5 animate-spin text-indigo-600"
             viewBox="0 0 24 24"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
           >
             <circle
               className="opacity-25"
