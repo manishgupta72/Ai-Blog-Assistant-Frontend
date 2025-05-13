@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import axios from "@/lib/api";
 import { CalendarDays } from "lucide-react";
 
-// ✅ Add type for blog
+// ✅ Define Blog interface
 interface Blog {
   title: string;
   content: string;
@@ -13,7 +13,7 @@ interface Blog {
 
 export default function BlogDetailPage() {
   const { id } = useParams();
-  const [blog, setBlog] = useState<Blog | null>(null);
+  const [blog, setBlog] = useState<Blog | null>(null); // ✅ Apply type here
 
   useEffect(() => {
     axios.get(`/blog/${id}`).then((res) => setBlog(res.data));
