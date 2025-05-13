@@ -7,8 +7,16 @@ import { CalendarDays, FileText, Trash2, Pen } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function AdminDashboard() {
+  interface Blog {
+    _id: string;
+    title: string;
+    content: string;
+    createdAt: string;
+  }
+
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
   const router = useRouter();
-  const [blogs, setBlogs] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
