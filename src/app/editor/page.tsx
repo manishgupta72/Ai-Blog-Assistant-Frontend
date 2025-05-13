@@ -82,7 +82,7 @@ export default function EditorPage() {
         setEditorState(editorState);
       });
     }
-  }, [topic, id]);
+  }, [topic, id, router]); // ✅ router added
 
   const handleUpdate = () => {
     const html = getHtml();
