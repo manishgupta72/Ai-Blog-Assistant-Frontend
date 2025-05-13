@@ -14,7 +14,7 @@ export default function AdminLogin() {
     if (isLoggedIn === "true") {
       router.push("/admin/dashboard");
     }
-  }, []);
+  }, [router]);
 
   const handleLogin = () => {
     if (password === "blogadmin7244") {

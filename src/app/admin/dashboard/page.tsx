@@ -24,9 +24,7 @@ export default function AdminDashboard() {
     try {
       const res = await axios.get("/blog");
       setBlogs(res.data);
-    } catch (err) {
-      toast.error("Failed to fetch blogs");
-    }
+    } 
   };
 
   const handleDelete = async (id: string) => {

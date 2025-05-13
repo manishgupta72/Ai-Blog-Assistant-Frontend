@@ -24,8 +24,7 @@ const Contact = () => {
           />
         </h2>
         <p className="text-gray-600 mb-12">
-          We&apos;d love to hear from you! Whether it&apos;s feedback,
-          collaboration, or just a hello — feel free to reach out anytime.
+          We&apos;d love to hear from you! Whether it&apos;s feedback...
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
