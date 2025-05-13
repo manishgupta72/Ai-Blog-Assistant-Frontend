@@ -4,7 +4,16 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const res = await fetch("http://localhost:4000/api/blog/generate", {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  if (!apiBaseUrl) {
+    return NextResponse.json(
+      { error: "API_BASE_URL is not defined" },
+      { status: 500 }
+    );
+  }
+
+  const res = await fetch(`${apiBaseUrl}/api/blog/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
