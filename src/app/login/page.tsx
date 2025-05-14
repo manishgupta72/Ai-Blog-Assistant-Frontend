@@ -6,7 +6,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.FRONTEND_URL}/api/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/google`;
   };
 
   useEffect(() => {
