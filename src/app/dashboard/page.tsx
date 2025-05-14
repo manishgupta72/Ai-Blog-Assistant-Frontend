@@ -4,8 +4,8 @@ import axios from "@/lib/api";
 import { CalendarDays, FileText } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/navigation";
+import { getAccessToken } from "@/lib/auth";
 
-// ✅ Define blog type
 interface Blog {
   _id: string;
   title: string;
@@ -14,13 +14,26 @@ interface Blog {
 }
 
 export default function DashboardPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([]); // ✅ Typed state
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [search, setSearch] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    axios.get("/blog/user/user123").then((res) => setBlogs(res.data));
-  }, []);
+    const token = getAccessToken();
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    axios
+      .get("/blog/user/user123")
+      .then((res) => setBlogs(res.data))
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          router.push("/login");
+        }
+      });
+  }, [router]);
 
   const filteredBlogs = blogs.filter((b) =>
     b.title.toLowerCase().includes(search.toLowerCase())

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/api";
-import { CalendarDays, FileText, Trash2, Pen } from "lucide-react";
+import { CalendarDays, FileText, Trash2, Pen, LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function AdminDashboard() {
@@ -76,9 +76,9 @@ export default function AdminDashboard() {
           localStorage.removeItem("admin_logged_in");
           router.push("/admin/login");
         }}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 float-right"
+        className="bg-red-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-red-600 float-right"
       >
-        Logout
+        <LogOut size={18} />
       </button>
 
       <div className="max-w-6xl mx-auto">
