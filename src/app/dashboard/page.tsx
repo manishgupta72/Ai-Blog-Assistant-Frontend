@@ -1,10 +1,10 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "@/lib/api";
-import { CalendarDays, FileText, Trash2, Pen, LogOut } from "lucide-react";
-import toast from "react-hot-toast";
+import { CalendarDays, FileText } from "lucide-react";
+import { Typewriter } from "react-simple-typewriter";
+import { useRouter } from "next/navigation";
+import { getAccessToken } from "@/lib/auth";
 
 interface Blog {
   _id: string;
@@ -13,63 +13,27 @@ interface Blog {
   createdAt: string;
 }
 
-export default function AdminDashboard() {
+export default function DashboardPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [search, setSearch] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => {
-      const token = localStorage.getItem("access_token");
-      const isAdmin = localStorage.getItem("admin_logged_in");
-
-      if (!token || isAdmin !== "true") {
-        toast.error("Admin access required. Please login.");
-        router.push("/admin/login");
-        return;
-      }
-
-      fetchBlogs();
-    }, 300); // slight delay for smoother token availability
-  }, []);
-
-  const fetchBlogs = async () => {
-    try {
-      const res = await axios.get("/blog");
-      setBlogs(res.data);
-    } catch (error) {
-      toast.error("Failed to fetch blogs. Try again later.");
-      console.error("Failed to fetch blogs:", error);
+    const token = getAccessToken();
+    if (!token) {
+      router.push("/login");
+      return;
     }
-  };
 
-  const handleDelete = async (id: string) => {
-    toast((t) => (
-      <div className="p-4">
-        <p className="font-medium mb-2">Delete this blog?</p>
-        <div className="flex gap-4 justify-end">
-          <button
-            onClick={() => {
-              toast.dismiss(t.id);
-              axios.delete(`/blog/${id}`).then(() => {
-                setBlogs((prev) => prev.filter((b) => b._id !== id));
-                toast.success("Deleted!");
-              });
-            }}
-            className="bg-red-600 text-white px-4 py-1 rounded"
-          >
-            Yes
-          </button>
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="text-gray-600 hover:underline"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    ));
-  };
+    axios
+      .get("/blog/user/user123")
+      .then((res) => setBlogs(res.data))
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          router.push("/login");
+        }
+      });
+  }, [router]);
 
   const filteredBlogs = blogs.filter((b) =>
     b.title.toLowerCase().includes(search.toLowerCase())
@@ -77,21 +41,22 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50 px-6 py-12">
-      <button
-        onClick={() => {
-          localStorage.removeItem("admin_logged_in");
-          localStorage.removeItem("access_token");
-          router.push("/admin/login");
-        }}
-        className="bg-red-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-red-600 float-right"
-      >
-        <LogOut size={18} />
-      </button>
-
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-indigo-500 mb-6 text-center">
-          🛠️ Admin Panel
-        </h2>
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-center text-3xl md:text-4xl font-extrabold text-indigo-800 mb-5">
+          <Typewriter
+            words={[
+              "My Blog Library",
+              "Generate AI-Powered Blogs",
+              "Create in Seconds, Not Hours",
+            ]}
+            loop
+            cursor
+            cursorStyle="_"
+            typeSpeed={60}
+            deleteSpeed={40}
+            delaySpeed={2000}
+          />
+        </h1>
 
         <input
           className="border border-gray-300 px-4 py-3 mb-10 w-full max-w-xl mx-auto block rounded-lg shadow-sm focus:ring-2 focus:outline-none focus:ring-blue-300"
@@ -105,6 +70,7 @@ export default function AdminDashboard() {
             <div
               key={blog._id}
               className="bg-gradient-to-br from-indigo-100 via-sky-100 to-purple-100 p-5 rounded-xl shadow-md hover:shadow-lg transition duration-300 cursor-pointer flex flex-col justify-between"
+              onClick={() => router.push(`/blog/${blog._id}`)}
             >
               <div className="flex items-start gap-3">
                 <div className="text-blue-600">
@@ -124,20 +90,9 @@ export default function AdminDashboard() {
                   <CalendarDays size={14} />
                   <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => router.push(`/editor?id=${blog._id}`)}
-                    className="hover:underline cursor-pointer ml-3"
-                  >
-                    <Pen size={14} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(blog._id)}
-                    className="hover:underline text-red-600 cursor-pointer ml-3"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
+                <span className="text-indigo-500 hover:underline">
+                  Read more →
+                </span>
               </div>
             </div>
           ))}

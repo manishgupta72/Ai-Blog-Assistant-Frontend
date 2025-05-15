@@ -1,32 +1,31 @@
-// ✅ Updated: frontend/app/admin/dashboard/page.tsx
+// 📁 frontend/app/admin/dashboard/page.tsx
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/api";
 import { CalendarDays, FileText, Trash2, Pen, LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 
-interface Blog {
-  _id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-}
-
 export default function AdminDashboard() {
+  interface Blog {
+    _id: string;
+    title: string;
+    content: string;
+    createdAt: string;
+  }
+
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [search, setSearch] = useState("");
+
   const router = useRouter();
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token || localStorage.getItem("admin_logged_in") !== "true") {
-      toast.error("Admin access required. Please login.");
+    const isLoggedIn = localStorage.getItem("admin_logged_in");
+    if (isLoggedIn !== "true") {
       router.push("/admin/login");
-      return;
+    } else {
+      fetchBlogs();
     }
-    fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
@@ -34,7 +33,6 @@ export default function AdminDashboard() {
       const res = await axios.get("/blog");
       setBlogs(res.data);
     } catch (error) {
-      toast.error("Failed to fetch blogs. Try again later.");
       console.error("Failed to fetch blogs:", error);
     }
   };
@@ -128,7 +126,7 @@ export default function AdminDashboard() {
                   </button>
                   <button
                     onClick={() => handleDelete(blog._id)}
-                    className="hover:underline text-red-600 cursor-pointer ml-3"
+                    className="hover:underline text-red-600  cursor-pointer ml-3"
                   >
                     <Trash2 size={14} />
                   </button>

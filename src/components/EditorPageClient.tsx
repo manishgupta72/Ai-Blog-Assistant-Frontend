@@ -33,77 +33,15 @@ export default function EditorPageClient() {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        toast.error("Please log in to generate a blog.");
-        router.push("/login");
-        return;
-      }
+    if (topic && !id && !blogCreated.current) {
+      blogCreated.current = true;
+      axios
+        .post("/blog/generate", { topic })
+        .then((res) => {
+          const content = res.data.content;
+          setTitle(topic);
 
-      let userId = "user123";
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        userId = payload.id;
-      } catch (err) {
-        toast.error("Invalid session. Please login again.");
-        router.push("/login");
-        return;
-      }
-
-      if (topic && !id && !blogCreated.current) {
-        blogCreated.current = true;
-        console.log("🚀 Generating blog for topic:", topic);
-
-        axios
-          .post("/blog/generate", { topic })
-          .then((res) => {
-            console.log("✅ /blog/generate response:", res.data);
-
-            const content = res.data.content;
-            setTitle(topic);
-
-            const blocksFromHtml = htmlToDraft(content);
-            const { contentBlocks, entityMap } = blocksFromHtml;
-            const contentState = ContentState.createFromBlockArray(
-              contentBlocks,
-              entityMap
-            );
-            const editorState = EditorState.createWithContent(contentState);
-            setEditorState(editorState);
-
-            // Continue to save blog to database
-            console.log("📦 Saving generated blog to DB with content:", {
-              title: topic,
-              content,
-              userId,
-            });
-
-            return axios.post("/blog", {
-              title: topic,
-              content,
-              userId,
-            });
-          })
-          .then((saveRes) => {
-            console.log("✅ Blog saved successfully:", saveRes.data);
-            const blogId = saveRes.data._id;
-            router.push(`/blog/${blogId}`);
-          })
-          .catch((err) => {
-            console.error(
-              "❌ Error during blog generation or saving:",
-              err.response?.data || err.message || err
-            );
-            toast.error("Failed to generate blog");
-          });
-      }
-
-      if (id) {
-        axios.get(`/blog/${id}`).then((res) => {
-          setTitle(res.data.title);
-
-          const blocksFromHtml = htmlToDraft(res.data.content);
+          const blocksFromHtml = htmlToDraft(content);
           const { contentBlocks, entityMap } = blocksFromHtml;
           const contentState = ContentState.createFromBlockArray(
             contentBlocks,
@@ -111,9 +49,34 @@ export default function EditorPageClient() {
           );
           const editorState = EditorState.createWithContent(contentState);
           setEditorState(editorState);
-        });
-      }
-    }, 300);
+
+          return axios.post("/blog", {
+            title: topic,
+            content,
+            userId: "user123",
+          });
+        })
+        .then((saveRes) => {
+          const blogId = saveRes.data._id;
+          router.push(`/blog/${blogId}`);
+        })
+        .catch(() => toast.error("Failed to generate blog"));
+    }
+
+    if (id) {
+      axios.get(`/blog/${id}`).then((res) => {
+        setTitle(res.data.title);
+
+        const blocksFromHtml = htmlToDraft(res.data.content);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(
+          contentBlocks,
+          entityMap
+        );
+        const editorState = EditorState.createWithContent(contentState);
+        setEditorState(editorState);
+      });
+    }
   }, [topic, id, router]);
 
   const handleUpdate = () => {
