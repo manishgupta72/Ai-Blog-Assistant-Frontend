@@ -1,10 +1,12 @@
+// 📁 frontend/app/dashboard/page.tsx
 "use client";
+
 import { useEffect, useState } from "react";
 import axios from "@/lib/api";
 import { CalendarDays, FileText } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/navigation";
-import { getAccessToken } from "@/lib/auth";
+import toast from "react-hot-toast";
 
 interface Blog {
   _id: string;
@@ -19,17 +21,32 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = getAccessToken();
+    const token = localStorage.getItem("accessToken");
+
     if (!token) {
+      toast.error("Please log in to access your dashboard.");
+      router.push("/login");
+      return;
+    }
+
+    // Decode JWT token to get user ID (base64 decode middle part)
+    let userId = "user123"; // fallback
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      userId = payload.id;
+    } catch (err) {
+      toast.error("Invalid token. Please log in again.");
       router.push("/login");
       return;
     }
 
     axios
-      .get("/blog/user/user123")
+      .get(`/blog/user/${userId}`)
       .then((res) => setBlogs(res.data))
       .catch((err) => {
+        console.error(err);
         if (err.response?.status === 401) {
+          toast.error("Session expired. Please log in again.");
           router.push("/login");
         }
       });

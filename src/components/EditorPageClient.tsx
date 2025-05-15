@@ -1,3 +1,4 @@
+// ✅ Updated: frontend/app/editor/page.tsx
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
@@ -33,6 +34,13 @@ export default function EditorPageClient() {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      toast.error("Please log in to generate a blog.");
+      router.push("/login");
+      return;
+    }
+
     if (topic && !id && !blogCreated.current) {
       blogCreated.current = true;
       axios
