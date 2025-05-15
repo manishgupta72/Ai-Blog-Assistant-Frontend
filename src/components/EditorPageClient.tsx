@@ -58,7 +58,7 @@ export default function EditorPageClient() {
         })
         .then((saveRes) => {
           const blogId = saveRes.data._id;
-          router.push(`/blog/${blogId}`);
+          router.push(`api/blog/${blogId}`);
         })
         .catch(() => toast.error("Failed to generate blog"));
     }
