@@ -53,9 +53,13 @@ export default function EditorPageClient() {
 
       if (topic && !id && !blogCreated.current) {
         blogCreated.current = true;
+        console.log("🚀 Generating blog for topic:", topic);
+
         axios
           .post("/blog/generate", { topic })
           .then((res) => {
+            console.log("✅ /blog/generate response:", res.data);
+
             const content = res.data.content;
             setTitle(topic);
 
@@ -68,6 +72,13 @@ export default function EditorPageClient() {
             const editorState = EditorState.createWithContent(contentState);
             setEditorState(editorState);
 
+            // Continue to save blog to database
+            console.log("📦 Saving generated blog to DB with content:", {
+              title: topic,
+              content,
+              userId,
+            });
+
             return axios.post("/blog", {
               title: topic,
               content,
@@ -75,10 +86,17 @@ export default function EditorPageClient() {
             });
           })
           .then((saveRes) => {
+            console.log("✅ Blog saved successfully:", saveRes.data);
             const blogId = saveRes.data._id;
             router.push(`/blog/${blogId}`);
           })
-          .catch(() => toast.error("Failed to generate blog"));
+          .catch((err) => {
+            console.error(
+              "❌ Error during blog generation or saving:",
+              err.response?.data || err.message || err
+            );
+            toast.error("Failed to generate blog");
+          });
       }
 
       if (id) {
