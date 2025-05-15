@@ -11,7 +11,9 @@ export default function ImageCaptionSuggester() {
   const handleCaption = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("/blog/suggest-caption", { description });
+      const res = await axios.post("/api/blog/suggest-caption", {
+        description,
+      });
       setCaption(res.data.caption);
       toast.success("Image caption generated!");
     } catch {

@@ -12,7 +12,7 @@ export default function ParagraphRewriter() {
   const handleRewrite = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("/blog/rewrite", { paragraph, tone });
+      const res = await axios.post("/api/blog/rewrite", { paragraph, tone });
       setRewritten(res.data.rewritten);
       toast.success("Paragraph rewritten!");
     } catch {

@@ -10,7 +10,7 @@ export default function SmartTitleSuggester({ content }: { content: string }) {
   const handleSuggest = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("/blog/suggest-title", { content });
+      const res = await axios.post("/api/blog/suggest-title", { content });
       setTitle(res.data.title);
       toast.success("Smart title generated!");
     } finally {
