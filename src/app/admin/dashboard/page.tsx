@@ -45,7 +45,7 @@ export default function AdminDashboard() {
           <button
             onClick={() => {
               toast.dismiss(t.id);
-              axios.delete(`/blog/${id}`).then(() => {
+              axios.delete(`/api/blog/${id}`).then(() => {
                 setBlogs((prev) => prev.filter((b) => b._id !== id));
                 toast.success("Deleted!");
               });
