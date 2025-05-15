@@ -12,7 +12,7 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`/blog/${id}`).then((res) => setBlog(res.data as any)); // ✅ cast as `any`
+      axios.get(`api/blog/${id}`).then((res) => setBlog(res.data as any)); // ✅ cast as `any`
     }
   }, [id]);
 
