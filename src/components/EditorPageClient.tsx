@@ -64,7 +64,7 @@ export default function EditorPageClient() {
     }
 
     if (id) {
-      axios.get(`/blog/${id}`).then((res) => {
+      axios.get(`/api/blog/${id}`).then((res) => {
         setTitle(res.data.title);
 
         const blocksFromHtml = htmlToDraft(res.data.content);
