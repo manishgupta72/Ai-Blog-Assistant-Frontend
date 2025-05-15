@@ -36,7 +36,7 @@ export default function EditorPageClient() {
     if (topic && !id && !blogCreated.current) {
       blogCreated.current = true;
       axios
-        .post("/blog/generate", { topic })
+        .post("/api/blog/generate", { topic })
         .then((res) => {
           const content = res.data.content;
           setTitle(topic);
@@ -50,7 +50,7 @@ export default function EditorPageClient() {
           const editorState = EditorState.createWithContent(contentState);
           setEditorState(editorState);
 
-          return axios.post("/blog", {
+          return axios.post("/api/blog", {
             title: topic,
             content,
             userId: "user123",
@@ -58,13 +58,13 @@ export default function EditorPageClient() {
         })
         .then((saveRes) => {
           const blogId = saveRes.data._id;
-          router.push(`/blog/${blogId}`);
+          router.push(`api/blog/${blogId}`);
         })
         .catch(() => toast.error("Failed to generate blog"));
     }
 
     if (id) {
-      axios.get(`/blog/${id}`).then((res) => {
+      axios.get(`/api/blog/${id}`).then((res) => {
         setTitle(res.data.title);
 
         const blocksFromHtml = htmlToDraft(res.data.content);
@@ -82,7 +82,7 @@ export default function EditorPageClient() {
   const handleUpdate = () => {
     const html = getHtml();
     axios
-      .put(`/blog/${id}`, { title, content: html })
+      .put(`/api/blog/${id}`, { title, content: html })
       .then(() => {
         toast.success("Blog updated successfully!");
         router.push("/admin/dashboard");
