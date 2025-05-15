@@ -58,13 +58,13 @@ export default function EditorPageClient() {
         })
         .then((saveRes) => {
           const blogId = saveRes.data._id;
-          router.push(`api/blog/${blogId}`);
+          router.push(`/blog/${blogId}`);
         })
         .catch(() => toast.error("Failed to generate blog"));
     }
 
     if (id) {
-      axios.get(`/api/blog/${id}`).then((res) => {
+      axios.get(`/blog/${id}`).then((res) => {
         setTitle(res.data.title);
 
         const blocksFromHtml = htmlToDraft(res.data.content);
