@@ -30,7 +30,7 @@ export default function AdminDashboard() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get("/blog");
+      const res = await axios.get("/api/blog");
       setBlogs(res.data);
     } catch (error) {
       console.error("Failed to fetch blogs:", error);
