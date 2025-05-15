@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const res = await fetch(`${apiBaseUrl}/blog/generate`, {
+  const res = await fetch(`${apiBaseUrl}/api/blog/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
