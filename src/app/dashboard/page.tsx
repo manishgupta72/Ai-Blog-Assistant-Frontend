@@ -26,7 +26,7 @@ export default function DashboardPage() {
     }
 
     axios
-      .get("/blog/user/user123")
+      .get("api/blog/user/user123")
       .then((res) => setBlogs(res.data))
       .catch((err) => {
         if (err.response?.status === 401) {
