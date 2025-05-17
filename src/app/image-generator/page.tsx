@@ -30,6 +30,10 @@ export default function ImageGeneratorPage() {
         <h2 className="text-4xl font-bold text-indigo-600 mb-4">
           🎨 AI Image Generator
         </h2>
+        <h4 className="text-2xl font-bold text-red-600 mb-4">
+          This features not working right now , we will provide this feature
+          soon !!!
+        </h4>
         <p className="mb-6 text-gray-600">
           Generate beautiful blog illustrations using AI
         </p>
