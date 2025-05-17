@@ -60,7 +60,7 @@ export default function EditorPageClient() {
           const blogId = saveRes.data._id;
           router.push(`/blog/${blogId}`); //after generated the blog, redirect to the blog page
         })
-        .catch(() => toast.error("Failed to generate blog"));
+        .catch(() => toast.error("Login First  to generate blog"));
     }
 
     if (id) {
