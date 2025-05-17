@@ -36,6 +36,9 @@ export default function HomePage() {
           AI Blog Assistant helps you create high-quality blog content in
           seconds. Just enter a topic and let AI do the rest.
         </p>
+        <p className="text-red-600 mb-6">
+          If you want to use this site , first login on Dashboard Page
+        </p>
         <form
           action="/editor"
           method="get"
