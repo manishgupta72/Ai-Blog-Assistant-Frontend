@@ -32,19 +32,19 @@ const Contact = () => {
             <div className="flex items-center gap-4">
               <Phone className="text-blue-600" />
               <span className="text-gray-700 text-lg font-medium">
-                +91 7800105170
+                +91 1100105170
               </span>
             </div>
             <div className="flex items-center gap-4">
               <Mail className="text-blue-600" />
               <span className="text-gray-700 text-lg font-medium">
-                manishgupta724872@gmail.com
+                test724872@gmail.com
               </span>
             </div>
             <div className="flex items-center gap-4">
               <Instagram className="text-pink-600" />
               <span className="text-gray-700 text-lg font-medium">
-                @manishg7244
+                @test7244
               </span>
             </div>
           </div>
