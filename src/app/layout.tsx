@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ai Blog Assistant - Manish Gupta",
-  description: "Created by Manish Gupta",
+  title: "Ai Blog Assistant ",
+  description: "",
 };
 
 export default function RootLayout({
